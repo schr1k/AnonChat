@@ -1,0 +1,7 @@
+trash
+venv
+.idea
+__pycache__
+config.py
+*.log
+db.db
