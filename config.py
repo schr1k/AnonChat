@@ -15,11 +15,6 @@ SHOP_ID = 'int'
 SECRET_KEY = 'str'
 
 
-# vip_day = 'ссылка на оплату (payok)'
-# vip_week = 'ссылка на оплату (payok)'
-# vip_month = 'ссылка на оплату (payok)'
-
-
 class RegState(StatesGroup):
 	name = State()
 	sex = State()
