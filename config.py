@@ -5,6 +5,13 @@ TOKEN = ''  # token from BotFather
 ADMINS = ['first_example', 'second_example']  # telegram identifiers (id) of admins (not necassary).
 DB = 'db.db'  # database file name
 
+# These variables are needed only if you use Payok
+RETURN_URL = 'https://t.me/anonchik_chat_bot'
+API_ID = 'int'
+API_KEY = 'str'
+SHOP_ID = 'int'
+SECRET_KEY = 'str'
+
 
 class RegState(StatesGroup):
 	name = State()
