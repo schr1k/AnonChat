@@ -1,18 +1,9 @@
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from enum import Enum
-# тут достаточно pip install aiogram
 
-TOKEN = 'Токен от BotFather'
-ADMINS = ['id админов через запятую']  # пока что в боте это нигде не используется ):
-DB = 'db.db'  # имя файла базы данных
-
-RETURN_URL = 'https://t.me/anonchik_chat_bot'  # ссылка для возврата после оплаты
-
-# payok
-API_ID = 'int'
-API_KEY = 'str'
-SHOP_ID = 'int'
-SECRET_KEY = 'str'
+TOKEN = '' # token from BotFather
+ADMINS = ['first_example', 'second_example']  # telegram identifiers (id) of admins (not necassary).
+DB = 'db.db'  # database file name
 
 
 class RegState(StatesGroup):
