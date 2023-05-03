@@ -996,24 +996,6 @@ async def end(message):
 	await message.answer('Я не знаю, что с этим делать 😲\nЯ просто напомню, что есть команды /start и /help')
 
 
-from flask import Flask
-from threading import Thread
-
-
-app = Flask('')
-
-
-@app.route('/')
-def home():
-	return "I'm alive"
-
-
-def run():
-	app.run(host='0.0.0.0', port=80)
-
-
 if __name__ == '__main__':
-	t = Thread(target=run)
-	t.start()
 	print('Работаем👌')
 	executor.start_polling(dp, skip_updates=True)
