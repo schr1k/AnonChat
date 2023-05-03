@@ -11,12 +11,16 @@
 ```
  git clone https://github.com/schr1k/AnonChat.git
 ```
-2. Install all necessary packages:
+2. Run:
+```
+cd AnonChat
+```
+3. Install all necessary packages:
 ```
  pip install -r requirements.txt
 ```
-3. Run create_db.py.
-4. Go to config.py and follow instructions.
+4. Run create_db.py.
+5. Go to config.py and follow instructions.
 ---
 ## If you want to use Payok as paying system:
 * Go to https://payok.io/.
