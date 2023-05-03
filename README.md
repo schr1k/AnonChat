@@ -19,6 +19,11 @@ cd AnonChat
 ```
  pip install -r requirements.txt
 ```
+  or
+```
+ pip install aiogram
+ pip install aiopayok
+```
 4. Run create_db.py.
 5. Go to config.py and follow instructions.
 ---
