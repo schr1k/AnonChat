@@ -6,7 +6,7 @@ ADMINS = ['first_example', 'second_example']  # telegram identifiers (id) of adm
 DB = 'db.db'  # database file name
 
 # These variables are needed only if you use Payok
-RETURN_URL = 'https://t.me/anonchik_chat_bot'
+RETURN_URL = 'https://t.me/anonchik_chat_bot' # Your bot link
 API_ID = 'int'
 API_KEY = 'str'
 SHOP_ID = 'int'
