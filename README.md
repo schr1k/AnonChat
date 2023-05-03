@@ -22,4 +22,5 @@ pip install -r requirements.txt
 * Go to https://payok.io/.
 * Create an account.
 * Change variables in config.py in lines 10 - 13 to given values.
+---
 #### That's it! ####
