@@ -1,3 +1,21 @@
-<h1 align="center">Hi everyone!</h1>
-<h2 align="center">This is my first telegram bot written with aiogram!</h2>
-<h2 align="center">You can check it out <a href="https://t.me/anonchik_chat_bot">here</a>.</h2>
+# Anonymous [сhat bot](https://t.me/anonchik_chat_bot) (telegram).
+### The bot was created for anonymous communication between two random users.
+---
+## Features:
+* Written with asynchronous python framework <a href="https://github.com/aiogram/aiogram">aiogram</a>.
+* Has two levels of logging.
+* Payment system ([Payok](https://payok.io/)) is connected to the bot.  
+---
+## Setup:
+1. Clone this repository:
+```
+git clone https://github.com/schr1k/AnonChat.git
+```
+2. Install all necessary packages:
+```
+pip install -r requirements.txt
+```
+3. Run create_db.py.
+4. Go to config.py and follow instructions.
+
+#### That's it! ####
