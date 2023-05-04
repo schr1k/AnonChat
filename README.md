@@ -25,7 +25,7 @@ cd AnonChat
  pip install aiopayok
 ```
 4. Run create_db.py.
-5. Go to config.py and follow instructions.
+5. Go to config.py and paste token from BotFather in line 4.
 ---
 ## If you want to use Payok as paying system:
 * Go to https://payok.io/.
