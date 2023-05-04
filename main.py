@@ -999,3 +999,8 @@ async def chatting_sticker(message, state: FSMContext):
 @dp.message_handler()
 async def end(message):
 	await message.answer('Я не знаю, что с этим делать 😲\nЯ просто напомню, что есть команды /start и /help')
+
+
+if __name__ == '__main__':
+	print('Работаем👌')
+	executor.start_polling(dp, skip_updates=True)
