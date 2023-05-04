@@ -18,11 +18,9 @@ cd AnonChat
 3. Install all necessary packages:
 ```
 pip install aiogram
+```
+```
 pip install aiopayok
-```
-or
-```
-pip install -r requirements.txt
 ```
 4. Run create_db.py.
 5. Go to config.py and paste token from BotFather in line 4.
