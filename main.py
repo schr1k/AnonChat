@@ -35,7 +35,6 @@ pay = Payok(api_id=config.API_ID, api_key=config.API_KEY, secret_key=config.SECR
 
 # Регистрация
 
-
 @dp.message_handler(lambda message: message.text == '🔙 На главную')
 @dp.message_handler(commands=['start'])
 async def start(message):
@@ -43,7 +42,7 @@ async def start(message):
 		db.set_state(None, message.from_user.id)
 		sp = message.text.split()
 		if len(sp) > 1 and not db.user_exists(message.from_user.id):
-			user_id = message.text.split()[1]
+			user_id = sp[1]
 			db.edit_refs(1, user_id)
 			db.edit_points(1, user_id)
 			if bool(db.get_notifications(user_id)[0]):
@@ -496,7 +495,7 @@ async def buy_day(message):
 		flag1 = False
 		while not flag1:
 			for i in transactions:
-				if i['payment_id'] == payment_id:
+				if i['payment_id'] == payment_id + 1:
 					if i['transaction_status'] == 1:
 						await message.answer('Успешно')
 						if db.get_vip_ends(message.from_user.id)[0] is None:
@@ -510,6 +509,8 @@ async def buy_day(message):
 						break
 					else:
 						await asyncio.sleep(3)
+				else:
+					await asyncio.sleep(3)
 	except Exception as e:
 		warning_log.warning(e)
 
@@ -525,7 +526,7 @@ async def buy_week(message):
 		flag2 = False
 		while not flag2:
 			for i in transactions:
-				if i['payment_id'] == payment_id:
+				if i['payment_id'] == payment_id + 1:
 					if i['transaction_status'] == 1:
 						await message.answer('Успешно')
 						if db.get_vip_ends(message.from_user.id)[0] is None:
@@ -539,6 +540,8 @@ async def buy_week(message):
 						break
 					else:
 						await asyncio.sleep(3)
+				else:
+					await asyncio.sleep(3)
 	except Exception as e:
 		warning_log.warning(e)
 
@@ -559,7 +562,7 @@ async def buy_month(message):
 		flag3 = False
 		while not flag3:
 			for i in transactions:
-				if i['payment_id'] == payment_id:
+				if i['payment_id'] == payment_id + 1:
 					if i['transaction_status'] == 1:
 						await message.answer('Успешно')
 						if db.get_vip_ends(message.from_user.id)[0] is None:
@@ -573,6 +576,8 @@ async def buy_month(message):
 						break
 					else:
 						await asyncio.sleep(3)
+				else:
+					await asyncio.sleep(3)
 	except Exception as e:
 		warning_log.warning(e)
 
@@ -994,8 +999,3 @@ async def chatting_sticker(message, state: FSMContext):
 @dp.message_handler()
 async def end(message):
 	await message.answer('Я не знаю, что с этим делать 😲\nЯ просто напомню, что есть команды /start и /help')
-
-
-if __name__ == '__main__':
-	print('Работаем👌')
-	executor.start_polling(dp, skip_updates=True)
