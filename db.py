@@ -27,14 +27,12 @@ class DbWorker:
 				(tg_id,)).fetchall()
 			return bool(len(result))
 
-	def new_user(self, name: str, age: str, sex: str, country: str, city: str, tg_username: str, tg_id: str | int,
-	             tg_first_name: str, tg_second_name: str):
+	def new_user(self, name: str, age: str, sex: str, country: str, city: str, tg_id: str | int):
 		with self.connection:
 			result = self.cursor.execute(
-				"INSERT INTO `users` (`name`, `age`, `sex`, `country`, `city`,"
-				"`tg_username`, `tg_id`, `tg_first_name`, `tg_second_name`)"
-				"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
-				(name, age, sex, country, city, tg_username, tg_id, tg_first_name, tg_second_name)
+				"INSERT INTO `users` (`name`, `age`, `sex`, `country`, `city`, `tg_id`)"
+				"VALUES(?, ?, ?, ?, ?, ?)",
+				(name, age, sex, country, city, tg_id)
 			)
 			return result
 
@@ -207,6 +205,14 @@ class DbWorker:
 			).fetchone()
 			return result
 
+	def get_order_id(self, tg_id: str | int):
+		with self.connection:
+			result = self.cursor.execute(
+				"SELECT `order_id` FROM `users` WHERE `tg_id` = ?",
+				(tg_id,)
+			).fetchone()
+			return result
+
 	def search(self, tg_id: str | int) -> str | int:
 		with self.connection:
 			res = self.cursor.execute(
@@ -337,6 +343,13 @@ class DbWorker:
 		with self.connection:
 			self.cursor.execute(
 				"UPDATE `users` SET `points` = `points` + ? WHERE `tg_id` = ?",
+				(value, tg_id)
+			)
+
+	def edit_order_id(self, value: int, tg_id: str | int):
+		with self.connection:
+			self.cursor.execute(
+				"UPDATE `users` SET `order_id` = `order_id` + ? WHERE `tg_id` = ?",
 				(value, tg_id)
 			)
 

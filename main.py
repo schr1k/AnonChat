@@ -77,14 +77,14 @@ async def help(message):
 @dp.message_handler(commands=['registrate'])
 async def registrate(message):
 	if not db.user_exists(message.from_user.id):
-		await message.answer("Введите ваше имя")
+		await message.answer("Введите ваше имя.")
 		await RegState.name.set()
 
 
 @dp.message_handler(state=RegState.name)
 async def set_name(message, state: FSMContext):
 	await state.update_data(name=message.text)
-	await message.answer("Теперь введите ваш пол (М/Ж)")
+	await message.answer("Теперь введите ваш пол (М/Ж).")
 	await RegState.sex.set()
 
 
@@ -92,14 +92,14 @@ async def set_name(message, state: FSMContext):
 async def set_sex(message, state: FSMContext):
 	if message.text == 'м' or message.text == 'М':
 		await state.update_data(sex='male')
-		await message.answer("Теперь введите ваш возраст")
+		await message.answer("Теперь введите ваш возраст.")
 		await RegState.age.set()
 	elif message.text == 'ж' or message.text == 'Ж':
 		await state.update_data(sex='female')
-		await message.answer("Теперь введите ваш возраст")
+		await message.answer("Теперь введите ваш возраст.")
 		await RegState.age.set()
 	else:
-		await message.reply("Вы ввели некорректное значение, повторите ввод")
+		await message.reply("Вы ввели некорректное значение, повторите ввод.")
 
 
 @dp.message_handler(state=RegState.age)
@@ -125,9 +125,7 @@ async def set_city(message, state: FSMContext):
 	await message.answer("Спасибо за регистрацию! Теперь вам доступен поиск - /search.",
 	                     reply_markup=kb.main_kb)
 	data = await state.get_data()
-	db.new_user(data['name'], data['age'], data['sex'], data['country'], data['city'],
-	            message.from_user.username, message.from_user.id,
-	            message.from_user.first_name, message.from_user.last_name)
+	db.new_user(data['name'], data['age'], data['sex'], data['country'], data['city'], message.from_user.id)
 	await state.finish()
 	if db.get_vip_ends(message.from_user.id)[0] is None:
 		db.edit_vip_ends((datetime.now() + timedelta(days=7)).strftime('%d.%m.%Y %H:%M'),
@@ -487,20 +485,24 @@ async def buy_vip(message):
 @dp.message_handler(lambda message: message.text == '👑 Вип на день - 20₽')
 async def buy_day(message):
 	try:
-		transactions = [dict(i) for i in list(await pay.get_transactions())]
-		payment_id = int(transactions[0]['payment_id'])
-		payments = await pay.create_pay(amount=20, currency='RUB', success_url=config.RETURN_URL,
-		                                desc=str(payment_id + 1), payment=payment_id + 1)
+		c = 0
+		tg_id = message.from_user.id
+		db.edit_order_id(1, tg_id)
+		payment_id = f'{tg_id}-{int(db.get_order_id(tg_id)[0]) + 1}'
+		payments = await pay.create_pay(amount=20, currency='RUB', success_url=config.RETURN_URL, desc=payment_id,
+		                                payment=payment_id)
 		await message.answer(f'<a href="{payments}">Оплатить 20 рублей</a>', parse_mode='HTML')
 		flag1 = False
 		while not flag1:
-			for i in transactions:
-				if i['payment_id'] == payment_id + 1:
+			for i in [dict(i) for i in list(await pay.get_transactions())]:
+				if i['payment_id'] == payment_id:
+					if c >= 3600:
+						flag1 = True
+						break
 					if i['transaction_status'] == 1:
 						await message.answer('Успешно')
-						if db.get_vip_ends(message.from_user.id)[0] is None:
-							db.edit_vip_ends((datetime.now() + timedelta(days=1)).strftime('%d.%m.%Y %H:%M'),
-							                 message.from_user.id)
+						if db.get_vip_ends(tg_id)[0] is None:
+							db.edit_vip_ends((datetime.now() + timedelta(days=1)).strftime('%d.%m.%Y %H:%M'), tg_id)
 						else:
 							db.edit_vip_ends(
 								(datetime.strptime(db.get_vip_ends(message.from_user.id)[0], '%d.%m.%Y %H:%M') +
@@ -509,8 +511,10 @@ async def buy_day(message):
 						break
 					else:
 						await asyncio.sleep(3)
+						c += 3
 				else:
 					await asyncio.sleep(3)
+					c += 3
 	except Exception as e:
 		warning_log.warning(e)
 
@@ -518,30 +522,36 @@ async def buy_day(message):
 @dp.message_handler(lambda message: message.text == '👑 Вип на неделю - 100₽')
 async def buy_week(message):
 	try:
-		transactions = [dict(i) for i in list(await pay.get_transactions())]
-		payment_id = int(transactions[0]['payment_id'])
-		payments = await pay.create_pay(amount=100, currency='RUB', success_url=config.RETURN_URL,
-		                                desc=str(payment_id + 1), payment=payment_id + 1)
+		c = 0
+		tg_id = message.from_user.id
+		db.edit_order_id(1, tg_id)
+		payment_id = f'{tg_id}-{int(db.get_order_id(tg_id)[0]) + 1}'
+		payments = await pay.create_pay(amount=100, currency='RUB', success_url=config.RETURN_URL, desc=payment_id,
+		                                payment=payment_id)
 		await message.answer(f'<a href="{payments}">Оплатить 100 рублей</a>', parse_mode='HTML')
-		flag2 = False
-		while not flag2:
-			for i in transactions:
-				if i['payment_id'] == payment_id + 1:
+		flag1 = False
+		while not flag1:
+			for i in [dict(i) for i in list(await pay.get_transactions())]:
+				if i['payment_id'] == payment_id:
+					if c >= 3600:
+						flag1 = True
+						break
 					if i['transaction_status'] == 1:
 						await message.answer('Успешно')
-						if db.get_vip_ends(message.from_user.id)[0] is None:
-							db.edit_vip_ends((datetime.now() + timedelta(days=7)).strftime('%d.%m.%Y %H:%M'),
-							                 message.from_user.id)
+						if db.get_vip_ends(tg_id)[0] is None:
+							db.edit_vip_ends((datetime.now() + timedelta(days=1)).strftime('%d.%m.%Y %H:%M'), tg_id)
 						else:
 							db.edit_vip_ends(
 								(datetime.strptime(db.get_vip_ends(message.from_user.id)[0], '%d.%m.%Y %H:%M') +
 								 timedelta(days=7)).strftime('%d.%m.%Y %H:%M'), message.from_user.id)
-						flag2 = True
+						flag1 = True
 						break
 					else:
 						await asyncio.sleep(3)
+						c += 3
 				else:
 					await asyncio.sleep(3)
+					c += 3
 	except Exception as e:
 		warning_log.warning(e)
 
@@ -549,35 +559,36 @@ async def buy_week(message):
 @dp.message_handler(lambda message: message.text == '👑 Вип на месяц - 300₽')
 async def buy_month(message):
 	try:
-		transactions = [dict(i) for i in list(await pay.get_transactions())]
-		payment_id = int(transactions[0]['payment_id']) + 1
-		if payment_id != transactions[0]['payment_id']:
-			payments = await pay.create_pay(amount=300, currency='RUB', success_url=config.RETURN_URL,
-			                                desc=str(payment_id + 1), payment=payment_id + 1)
-		else:
-			payments = await pay.create_pay(amount=300, currency='RUB', success_url=config.RETURN_URL,
-			                                desc=str(payment_id + 1), payment=payment_id + 2)
+		c = 0
+		tg_id = message.from_user.id
+		db.edit_order_id(1, tg_id)
+		payment_id = f'{tg_id}-{int(db.get_order_id(tg_id)[0]) + 1}'
+		payments = await pay.create_pay(amount=300, currency='RUB', success_url=config.RETURN_URL, desc=payment_id,
+		                                payment=payment_id)
 		await message.answer(f'<a href="{payments}">Оплатить 300 рублей</a>', parse_mode='HTML')
-		transactions = [dict(i) for i in list(await pay.get_transactions())]
-		flag3 = False
-		while not flag3:
-			for i in transactions:
-				if i['payment_id'] == payment_id + 1:
+		flag1 = False
+		while not flag1:
+			for i in [dict(i) for i in list(await pay.get_transactions())]:
+				if i['payment_id'] == payment_id:
+					if c >= 3600:
+						flag1 = True
+						break
 					if i['transaction_status'] == 1:
 						await message.answer('Успешно')
-						if db.get_vip_ends(message.from_user.id)[0] is None:
-							db.edit_vip_ends((datetime.now() + timedelta(days=30)).strftime('%d.%m.%Y %H:%M'),
-							                 message.from_user.id)
+						if db.get_vip_ends(tg_id)[0] is None:
+							db.edit_vip_ends((datetime.now() + timedelta(days=1)).strftime('%d.%m.%Y %H:%M'), tg_id)
 						else:
 							db.edit_vip_ends(
 								(datetime.strptime(db.get_vip_ends(message.from_user.id)[0], '%d.%m.%Y %H:%M') +
-								 timedelta(days=30)).strftime('%d.%m.%Y %H:%M'), message.from_user.id)
-						flag3 = True
+								 timedelta(days=31)).strftime('%d.%m.%Y %H:%M'), message.from_user.id)
+						flag1 = True
 						break
 					else:
 						await asyncio.sleep(3)
+						c += 3
 				else:
 					await asyncio.sleep(3)
+					c += 3
 	except Exception as e:
 		warning_log.warning(e)
 
