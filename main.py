@@ -325,9 +325,6 @@ async def ref(message):
 			await message.answer(f'🆔 Ваша реферальная ссылка:\n'
 			                     f'{"https://t.me/anonchik_chat_bot?start=" + str(user_id)}',
 			                     disable_web_page_preview=True, reply_markup=kb.on_kb)
-	# await message.answer(f'🆔 Ваша реферальная ссылка:\n'
-	#                      f'{"https://t.me/anonchik_chat_bot?start=" + str(user_id)}',
-	#                      disable_web_page_preview=True, reply_markup=kb.ref_kb)
 	except Exception as e:
 		warning_log.warning(e)
 
