@@ -9,7 +9,7 @@
 ## Setup:
 1. Clone this repository:
 ```
- git clone https://github.com/schr1k/AnonChat.git
+git clone https://github.com/schr1k/AnonChat.git
 ```
 2. Run:
 ```
