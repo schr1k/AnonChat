@@ -9,21 +9,14 @@
 ## Setup:
 1. Clone this repository:
 ```
-git clone https://github.com/schr1k/AnonChat.git
+git clone https://github.com/schr1k/AnonChat.git .
 ```
-2. Run:
+2. Install all necessary packages:
 ```
-cd AnonChat
+pip install -r requirements.txt
 ```
-3. Install all necessary packages:
-```
-pip install aiogram
-```
-```
-pip install aiopayok
-```
-4. Run create_db.py.
-5. Go to config.py and paste token from BotFather in line 4.
+3. Run create_db.py.
+4. Go to config.py and paste token from BotFather in line 4.
 ---
 ## If you want to use Payok as paying system:
 * Go to https://payok.io/.
