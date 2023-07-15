@@ -8,11 +8,11 @@
 ---
 ## Setup:
 1. Clone this repository:
-```
+```console
 git clone https://github.com/schr1k/AnonChat.git .
 ```
 2. Install all necessary packages:
-```
+```console
 pip install -r requirements.txt
 ```
 3. Run create_db.py.
