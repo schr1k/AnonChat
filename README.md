@@ -1,3 +1,4 @@
+## This repository is legacy. Visit https://github.com/schr1k/AnonChat_2.0 to see present version.
 # Anonymous [сhat bot](https://t.me/anonchik_chat_bot) (telegram).
 #### The bot was created for anonymous chatting between two random users.
 ---
